@@ -70,14 +70,31 @@ public class PlayerController : MonoBehaviour
     public AudioManager audioManager;
 
 
+    /// <summary>
+    /// Проверка, летели ли мы вправо
+    /// </summary>
+    private bool isRight = false;
+
+    /// <summary>
+    /// Проверка, летели ли мы влево
+    /// </summary>
+    private bool isLeft = false;
+
+    private Animator animator;
+
+
     void Start()
     {
         //Получаем компоненты и настраиваем окружение
         playerTransform = GetComponent<Transform>();
 
+        animator = GetComponent<Animator>();
+
         playerTransform.position = spawnPoint;
 
         Time.timeScale = 1;
+
+
     }
 
     
@@ -91,7 +108,32 @@ public class PlayerController : MonoBehaviour
         xAxis = Input.GetAxisRaw("Horizontal");
         yAxis = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetMouseButtonDown(0))
+        
+
+        if((xAxis > 0 || joystick.Horizontal > 0) && isLeft == true)
+        {
+            animator.SetTrigger("Right");
+            isLeft = false;
+        }
+
+        if((xAxis < 0 || joystick.Horizontal < 0) && isRight == true)
+        {
+            animator.SetTrigger("Left");
+            isRight = false;
+        }
+
+        if (xAxis > 0 || joystick.Horizontal > 0)
+        {
+            isRight = true;
+            isLeft = false;
+        }
+        else if (xAxis < 0 || joystick.Horizontal < 0)
+        {
+            isRight = false;
+            isLeft = true;
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
             Fire();
         }

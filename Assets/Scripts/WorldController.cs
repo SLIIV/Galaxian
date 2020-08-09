@@ -84,11 +84,11 @@ public class WorldController : MonoBehaviour
             //Устанавливаем размер коллайдеров относительно экрана
             if(borders[i].gameObject.layer == LayerMask.NameToLayer("HorBord"))
             {
-                borders[i].size = new Vector2(borders[i].size.x, Screen.width);
+                borders[i].size = new Vector2(borders[i].size.x, Screen.width * 2);
             }
             else if(borders[i].gameObject.layer == LayerMask.NameToLayer("VertBord"))
             {
-                borders[i].size = new Vector2(borders[i].size.x, Screen.height);
+                borders[i].size = new Vector2(borders[i].size.x, Screen.height * 2);
             }
         }
         nextLevelId = curLevel + 1;
