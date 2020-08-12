@@ -34,6 +34,19 @@ public class LevelState : ScriptableObject
     /// </summary>
     [SerializeField] private int startAsteroids;
 
+
+    /// <summary>
+    /// Это уровень с таймером?
+    /// </summary>
+    [SerializeField] private bool isTimerlevel;
+
+    [SerializeField] private float timeToWin;
+
+
+    [SerializeField] private bool canFire;
+
+
+
     #region Поля
     public int Id
     {
@@ -80,6 +93,28 @@ public class LevelState : ScriptableObject
         get
         {
             return startAsteroids;
+        }
+    }
+
+    public bool IsTimerLevel
+    {
+        get
+        {
+            return isTimerlevel;
+        }
+    }
+    public float TimeToWin
+    {
+        get
+        {
+            return timeToWin;
+        }
+    }
+    public bool CanFire
+    {
+        get
+        {
+            return canFire;
         }
     }
     #endregion

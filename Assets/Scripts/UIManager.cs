@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public PlayerController player;
 
+
     private void OnGUI()
     {
         //Обновляем интерфейс

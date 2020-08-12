@@ -27,18 +27,22 @@ public class CurrentLevelData : MonoBehaviour
         //получаем состояние уровней
         if (levelData.Id != 1)
         {
-            levelData.State = PlayerPrefs.GetString($"levelState{levelData.Id}", "Закрыт");
+            levelData.State = PlayerPrefs.GetString($"levelState{levelData.Id}", "Closed");
         }
         else
         {
-            levelData.State = PlayerPrefs.GetString($"levelState{levelData.Id}", "Не пройдено");
+            levelData.State = PlayerPrefs.GetString($"levelState{levelData.Id}", "Not passed");
         }
 
         //Закрываем не открытые уровни
         state.text = levelData.State;
-        if(levelData.State == "Закрыт")
+        if(levelData.State == "Closed")
         {
             levelButton.interactable = false;
+        }
+        else
+        {
+            levelButton.interactable = true;
         }
     }
 }

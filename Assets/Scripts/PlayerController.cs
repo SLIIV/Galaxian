@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Runtime.CompilerServices;
+using DG.Tweening;
 
 /// <summary>
 /// Скрипт управляющий игроком
@@ -34,10 +35,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private float yAxis;
 
-    /// <summary>
-    /// Скрипт управления джойстиком
-    /// </summary>
-    public Joystick joystick;
 
     /// <summary>
     /// Префаб пули
@@ -62,7 +59,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Проверка на перезарядку
     /// </summary>
-    private bool isReloading;
+    [HideInInspector] public bool isReloading;
 
     /// <summary>
     /// Компонент аудио
@@ -82,6 +79,10 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
 
+    public WorldController world;
+
+    private Transform camera;
+
 
     void Start()
     {
@@ -94,6 +95,11 @@ public class PlayerController : MonoBehaviour
 
         Time.timeScale = 1;
 
+        if(audioManager == null)
+        {
+            audioManager = GameObject.FindGameObjectWithTag("Music").GetComponent<AudioManager>();
+        }
+        camera = Camera.main.transform;
 
     }
 
@@ -102,7 +108,7 @@ public class PlayerController : MonoBehaviour
     {
         
         if (isDead)
-            return; //если мерты - останавливаем игру
+            return; //если мертвы - останавливаем игру
 
         //Получаем данные о нажатиях
         xAxis = Input.GetAxisRaw("Horizontal");
@@ -110,55 +116,32 @@ public class PlayerController : MonoBehaviour
 
         
 
-        if((xAxis > 0 || joystick.Horizontal > 0) && isLeft == true)
-        {
-            animator.SetTrigger("Right");
-            isLeft = false;
-        }
-
-        if((xAxis < 0 || joystick.Horizontal < 0) && isRight == true)
-        {
-            animator.SetTrigger("Left");
-            isRight = false;
-        }
-
-        if (xAxis > 0 || joystick.Horizontal > 0)
-        {
-            isRight = true;
-            isLeft = false;
-        }
-        else if (xAxis < 0 || joystick.Horizontal < 0)
-        {
-            isRight = false;
-            isLeft = true;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Fire();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Fire();
+        //}
     }
 
     void FixedUpdate()
     {
         //Двигаем игрока в определённую сторону
         playerTransform.position += new Vector3(xAxis, yAxis) * Time.deltaTime * speed;
-        playerTransform.position += new Vector3(joystick.Horizontal, joystick.Vertical) * Time.deltaTime * speed;
     }
 
     /// <summary>
     /// Обработка выстрела
     /// </summary>
-    private void Fire()
+    public void Fire()
     {
-        if (!isReloading)
+        if (!isReloading && world.canFire)
         {
             //Создаём пульку
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, -90));
+            GameObject bullet = Instantiate(bulletPrefab, transform.position + Vector3.up, Quaternion.Euler(0, 0, -90));
             Destroy(bullet, 5);
             isReloading = true;
-            StartCoroutine(WeaponReload(0.5f));
+            StartCoroutine(WeaponReload(0.75f));
             audioManager.PlaySound(3);
+            camera.DOShakePosition(0.2f, 0.25f, 50);
         }
     }
 
@@ -175,6 +158,7 @@ public class PlayerController : MonoBehaviour
             }
             else
                 audioManager.PlaySound(2);
+            camera.DOShakePosition(0.5f, 0.5f, 15);
         }
     }
 

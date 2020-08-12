@@ -14,6 +14,16 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     private AudioSource audioSource;
 
+
+    private void Awake()
+    {
+        GameObject[] musicObjs = GameObject.FindGameObjectsWithTag("Music");
+        if(musicObjs.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
     private void Start()
     {
         //Получаем компоненты

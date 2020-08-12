@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: 
   id: 3
-  state: "\u041F\u0440\u043E\u0439\u0434\u0435\u043D\u043E"
-  minAsteroidsSpawnDelay: 2
-  maxAsteroidsSpawnDelay: 9
+  state: Passed
+  minAsteroidsSpawnDelay: 1
+  maxAsteroidsSpawnDelay: 4
   asteroidsToWin: 15
-  startAsteroids: 6
+  startAsteroids: 15
+  isTimerlevel: 1
+  timeToWin: 45
